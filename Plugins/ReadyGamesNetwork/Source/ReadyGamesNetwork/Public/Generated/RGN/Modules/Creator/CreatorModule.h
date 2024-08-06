@@ -2,6 +2,7 @@
 // This file is generated: please don't modify. Go to Unity code generator if you need changes.
 #include "../../../../json.hpp"
 #include "../../../../Core/RGNCore.h"
+#include "../../../../Utility/CancellationToken.h"
 #include "CreatorSignupResponseData.h"
 #include "CreatorSignupRequestData.h"
 #include "../VirtualItems/VirtualItem.h"
@@ -21,12 +22,14 @@ namespace RGN { namespace Modules { namespace Creator {
     public:
         /**
          * Sends an asynchronous request to the backend to become a creator
+         * @param cancellationToken - A token to cancel the operation.
          * @return FirebaseCreatorSignupResponseData.message = "Success" OR "Brand name already exists" OR "User is already enrolled in Creator Program" OR "Invalid BrandName";
          */
         static void BecomeACreatorAsync(
             const function<void(const RGN::Modules::Creator::CreatorSignupResponseData& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& brandName) {
+            const string& brandName,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::Creator::CreatorSignupRequestData requestData;
                 requestData.brandName = brandName;
                 RGNCore::CallAPI<RGN::Modules::Creator::CreatorSignupRequestData, RGN::Modules::Creator::CreatorSignupResponseData>(
@@ -34,12 +37,14 @@ namespace RGN { namespace Modules { namespace Creator {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void SubmitItemAsync(
             const function<void(const RGN::Modules::Creator::CreatorSubmitItemResponseData& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const RGN::Modules::VirtualItems::VirtualItem& customizedItem) {
+            const RGN::Modules::VirtualItems::VirtualItem& customizedItem,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::Creator::CreatorSubmitItemRequestData requestData;
                 requestData.customizedItem = customizedItem;
                 RGNCore::CallAPI<RGN::Modules::Creator::CreatorSubmitItemRequestData, RGN::Modules::Creator::CreatorSubmitItemResponseData>(
@@ -47,29 +52,34 @@ namespace RGN { namespace Modules { namespace Creator {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void GetCreatorDataAsync(
             const function<void(const RGN::Modules::Creator::CreatorData& result)>& success,
-            const function<void(const int httpCode, const string& error)>& fail) {
+            const function<void(const int httpCode, const string& error)>& fail,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Model::Request::BaseMigrationRequestData requestData;
                 RGNCore::CallAPI<RGN::Model::Request::BaseMigrationRequestData, RGN::Modules::Creator::CreatorData>(
                     "creator-getCreatorData",
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void ClaimCurrenciesAsync(
             const function<void(const RGN::Modules::Currency::ClaimCurrencyResponseData& result)>& success,
-            const function<void(const int httpCode, const string& error)>& fail) {
+            const function<void(const int httpCode, const string& error)>& fail,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Model::Request::BaseMigrationRequestData requestData;
                 RGNCore::CallAPI<RGN::Model::Request::BaseMigrationRequestData, RGN::Modules::Currency::ClaimCurrencyResponseData>(
                     "creator-claimCurrency",
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
     };
 }}}

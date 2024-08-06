@@ -25,11 +25,13 @@ namespace RGN { namespace Modules { namespace VirtualItems {
     public:
         /**
          * Add a virtual item
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void AddVirtualItemAsync(
             const function<void(const RGN::Modules::VirtualItems::VirtualItem& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const RGN::Modules::VirtualItems::VirtualItem& virtualItem) {
+            const RGN::Modules::VirtualItems::VirtualItem& virtualItem,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::VirtualItems::AddToVirtualItemsRequestData requestData;
                 requestData.virtualItem = virtualItem;
                 RGNCore::CallAPI<RGN::Modules::VirtualItems::AddToVirtualItemsRequestData, RGN::Modules::VirtualItems::AddVirtualItemResponseData>(
@@ -39,7 +41,8 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItem);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Asynchronously adds a list of virtual items from a CSV content string to the Ready Games Network.
@@ -76,13 +79,15 @@ namespace RGN { namespace Modules { namespace VirtualItems {
          * Asynchronously updates a specific virtual item in the Ready Games Network.
          * @param itemId - The ID of the virtual item to be updated.
          * @param virtualItem - A VirtualItem object containing the new data for the virtual item.
+         * @param cancellationToken - A token to cancel the operation.
          * @return A Task representing the asynchronous operation. The result of the Task is the updated VirtualItem.
          */
         static void UpdateVirtualItemAsync(
             const function<void(const RGN::Modules::VirtualItems::VirtualItem& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& itemId,
-            const RGN::Modules::VirtualItems::VirtualItem& virtualItem) {
+            const RGN::Modules::VirtualItems::VirtualItem& virtualItem,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::VirtualItems::UpdateVirtualItemsRequestData requestData;
                 requestData.itemId = itemId;
                 requestData.virtualItem = virtualItem;
@@ -93,18 +98,21 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItem);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Asynchronously deletes a specific virtual item from the Ready Games Network.
          * @param itemId - The ID of the virtual item to be deleted.
+         * @param cancellationToken - A token to cancel the operation.
          * @return A Task representing the asynchronous operation.
          * @throw: Thrown when 'itemId' is null or empty.
          */
         static void DeleteVirtualItemAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& itemId) {
+            const string& itemId,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["itemId"] = itemId;
@@ -113,11 +121,17 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
+        /**
+         * Getting all virtual items releated to your game
+         * @param cancellationToken - A token to cancel the operation.
+         */
         static void GetVirtualItemsAsync(
             const function<void(const vector<RGN::Modules::VirtualItems::VirtualItem>& result)>& success,
-            const function<void(const int httpCode, const string& error)>& fail) {
+            const function<void(const int httpCode, const string& error)>& fail,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Model::Request::BaseMigrationRequestData requestData;
                 RGNCore::CallAPI<RGN::Model::Request::BaseMigrationRequestData, RGN::Modules::VirtualItems::VirtualItemsResponseData>(
                     "virtualItemsV2-getByAppId",
@@ -126,18 +140,21 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItems);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Returns a limited list of virtual items for your game.
          * @param limit - Maximal count of items to return
          * @param startAfter - The item id to start after
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void GetVirtualItemsAsync(
             const function<void(const vector<RGN::Modules::VirtualItems::VirtualItem>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const int32_t limit,
-            const string& startAfter = "") {
+            const string& startAfter = "",
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::VirtualItems::GetAllVirtualItemsByAppIdsRequestData requestData;
                 requestData.appIds = vector<string>{ RGNCore::GetAppId() };
                 requestData.limit = limit;
@@ -149,12 +166,14 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItems);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void GetVirtualItemsByIdsAsync(
             const function<void(const vector<RGN::Modules::VirtualItems::VirtualItem>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const vector<string>& virtualItemsIds) {
+            const vector<string>& virtualItemsIds,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::VirtualItems::GetVirtualItemsByIdsRequestData requestData;
                 requestData.ids = virtualItemsIds;
                 RGNCore::CallAPI<RGN::Modules::VirtualItems::GetVirtualItemsByIdsRequestData, RGN::Modules::VirtualItems::VirtualItemsResponseData>(
@@ -164,17 +183,17 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItems);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void GetByTagsAsync(
             const function<void(const vector<RGN::Modules::VirtualItems::VirtualItem>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const vector<string>& tags,
-            const string& appId = "") {
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["tags"] = tags;
-                requestData["optionalAppId"] = appId;
                 RGNCore::CallAPI<nlohmann::json, RGN::Modules::VirtualItems::VirtualItemsResponseData>(
                     "virtualItemsV2-getByTags",
                     requestData,
@@ -182,15 +201,18 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.virtualItems);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Returns all tags for specific virtual item
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void GetTagsAsync(
             const function<void(const vector<string>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& virtualItemId) {
+            const string& virtualItemId,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
@@ -202,34 +224,37 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result.tags);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void SetTagsAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& virtualItemId,
             const vector<string>& tags,
-            const string& appId = "") {
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
                 requestData["tags"] = tags;
-                requestData["optionalAppId"] = appId;
                 RGNCore::CallAPI<nlohmann::json>(
                     "virtualItemsV2-setTags",
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Sets the name for a specific virtual item
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void SetNameAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& virtualItemId,
-            const string& name) {
+            const string& name,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
@@ -239,16 +264,19 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Sets the description for a specific virtual item
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void SetDescriptionAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& virtualItemId,
-            const string& description) {
+            const string& description,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
@@ -258,16 +286,19 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Returns json string or throws an exception if there are no json for virtual item
+         * @param cancellationToken - A token to cancel the operation.
          * @return Returns json as string
          */
         static void GetPropertiesAsync(
             const function<void(const string& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& virtualItemId) {
+            const string& virtualItemId,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
@@ -279,17 +310,20 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result["properties"].template get<string>());
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Set json on a given virtualItemId.
+         * @param cancellationToken - A token to cancel the operation.
          * @return Returns json as string
          */
         static void SetPropertiesAsync(
             const function<void(const string& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& virtualItemId,
-            const string& json) {
+            const string& json,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemId"] = virtualItemId;
@@ -302,13 +336,14 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                         success(result["properties"].template get<string>());
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         /**
          * Uploads an image thumbnail for a virtual item to the RGNCore backend.
          * @param virtualItemId - The ID of the virtual item to upload the thumbnail for.
          * @param thumbnailTextureBytes - The byte array of the thumbnail texture image to upload.
-         * @param cancellationToken - The cancellation token.
+         * @param cancellationToken - A token to cancel the operation.
          * @return A boolean indicating whether the upload was successful.
          */
         static void UploadImageAsync(

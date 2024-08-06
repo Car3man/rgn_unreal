@@ -15,7 +15,7 @@ bool FAddUserProgressAsyncTest::RunTest(const FString& Parameters)
     onFail.BindUFunction(TestHelper, FName("HandleFailure"));
 
     FString userProgressJson = TEXT("{\"progress\": 50}");
-    UBP_GameProgressModule::AddUserProgressAsync(onSuccess, onFail, userProgressJson);
+    UBP_GameProgressModule::AddUserProgressAsync(onSuccess, onFail, FBP_CancellationToken(), userProgressJson);
 
     return true;
 }
@@ -30,7 +30,7 @@ bool FOnGameCompleteAsyncTest::RunTest(const FString& Parameters)
     FGameProgressModuleFailResponse onFail;
     onFail.BindUFunction(TestHelper, FName("HandleFailure"));
 
-    UBP_GameProgressModule::OnGameCompleteAsync(onSuccess, onFail, {});
+    UBP_GameProgressModule::OnGameCompleteAsync(onSuccess, onFail, FBP_CancellationToken(), {});
 
     return true;
 }

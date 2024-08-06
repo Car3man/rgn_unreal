@@ -15,7 +15,8 @@ namespace RGN { namespace Modules { namespace Achievement {
             const std::function<void(std::vector<RGN::Modules::Achievement::AchievementData> result)>& success,
             const std::function<void(int httpCode, std::string error)>& fail,
             int32_t limit,
-            std::string startAfter) {
+            std::string startAfter,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["appIds"] = { RGNCore::GetAppId() };
@@ -28,7 +29,7 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(result.achievements);
                     },
                     fail,
-                    false
+                    false, cancellationToken
                 );
             };
 
@@ -38,7 +39,8 @@ namespace RGN { namespace Modules { namespace Achievement {
             std::vector<string> appIds,
             int32_t limit,
             std::string startAfter,
-            bool withHistory) {
+            bool withHistory,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["appId"] = RGNCore::GetAppId();
                 bodyJson["appIds"] = appIds;
@@ -59,7 +61,7 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(response.achievements);
                     }, 
                 fail,
-                false);
+                false, cancellationToken);
             };
 
         static void GetByTagsWithUserDataAsync(
@@ -67,8 +69,9 @@ namespace RGN { namespace Modules { namespace Achievement {
             const std::function<void(int httpCode, std::string error)>& fail,
             std::vector<std::string> tags,
             int32_t limit,
-            std::string startAfter,
-            bool withHistory) {
+            int64_t startAfter,
+            bool withHistory,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["appId"] = RGNCore::GetAppId();
                 bodyJson["tags"] = tags;
@@ -89,15 +92,16 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(response.achievements);
                     },
                 fail,
-                false);
+                false, cancellationToken);
             };
 
         static void GetForCurrentAppWithUserDataAsync(
             const std::function<void(std::vector<RGN::Modules::Achievement::AchievementWithUserData> result)>& success,
             const std::function<void(int httpCode, std::string error)>& fail,
             int32_t limit,
-            std::string startAfter) {
-                GetByAppIdsWithUserDataAsync(success, fail, { RGNCore::GetAppId() }, limit, startAfter, false);
+            std::string startAfter,
+            CancellationToken cancellationToken = CancellationToken()) {
+                GetByAppIdsWithUserDataAsync(success, fail, { RGNCore::GetAppId() }, limit, startAfter, false, cancellationToken);
             };
 
         static void GetUserAchievementsAsync(
@@ -106,7 +110,8 @@ namespace RGN { namespace Modules { namespace Achievement {
             std::string userId,
             bool withHistory,
             int64_t startAfter,
-            int32_t limit) {
+            int32_t limit,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["appId"] = RGNCore::GetAppId();
                 bodyJson["userId"] = userId;
@@ -119,7 +124,7 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(response.userAchievements);
                     },
                 fail,
-                false);
+                false, cancellationToken);
             };
 
         static void GetUserAchievementByIdAsync(
@@ -127,7 +132,8 @@ namespace RGN { namespace Modules { namespace Achievement {
             const std::function<void(int httpCode, std::string error)>& fail,
             std::string achievementId,
             std::string userId,
-            bool withHistory) {
+            bool withHistory,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["appId"] = RGNCore::GetAppId();
                 bodyJson["achievementId"] = achievementId;
@@ -139,7 +145,7 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(response);
                     },
                 fail,
-                false);
+                false, cancellationToken);
             };
     };
 }}}

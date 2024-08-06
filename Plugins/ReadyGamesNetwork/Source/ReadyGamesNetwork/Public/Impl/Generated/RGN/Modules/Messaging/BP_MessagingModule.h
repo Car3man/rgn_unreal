@@ -2,6 +2,8 @@
 // This file is generated: please don't modify. Go to Unity code generator if you need changes.
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "../../../../Utility/BP_CancellationToken.h"
+#include "../../../../../Utility/CancellationToken.h"
 #include "../../../../../Generated/RGN/Modules/Messaging/MessagingModule.h"
 #include "../../../../../Generated/RGN/Modules/Messaging/IMessageReceiver.h"
 #include "BP_IMessageReceiver.h"
@@ -75,11 +77,13 @@ public:
      * in case the application is in background
      * @param text - Optional. If provided, the message will appear in system tray
      * in case the application is in background
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | Messaging")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | Messaging", meta=(AutoCreateRefTerm="cancellationToken"))
     static void SendMessageByUserId(
         FMessagingModuleSendMessageByUserIdResponse onSuccess,
         FMessagingModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& appId,
         const FString& userId,
         const FString& payload,
@@ -90,11 +94,13 @@ public:
             string cpp_payload;
             string cpp_title;
             string cpp_text;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_appId = string(TCHAR_TO_UTF8(*appId));
             cpp_userId = string(TCHAR_TO_UTF8(*userId));
             cpp_payload = string(TCHAR_TO_UTF8(*payload));
             cpp_title = string(TCHAR_TO_UTF8(*title));
             cpp_text = string(TCHAR_TO_UTF8(*text));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::Messaging::MessagingModule::SendMessageByUserId(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -106,6 +112,7 @@ public:
                 cpp_userId,
                 cpp_payload,
                 cpp_title,
-                cpp_text);
+                cpp_text,
+                cpp_cancellationToken);
     }
 };

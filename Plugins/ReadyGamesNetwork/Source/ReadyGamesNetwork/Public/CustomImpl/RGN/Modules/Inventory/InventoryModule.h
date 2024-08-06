@@ -16,8 +16,9 @@ namespace RGN { namespace Modules { namespace Inventory {
             const std::function<void(int httpCode, std::string error)>& fail,
             std::string virtualItemId,
             int32_t quantity,
-            RGN::Modules::VirtualItems::Properties properties) {
-                AddToInventoryAsync(success, fail, RGNCore::GetUserId(), virtualItemId, quantity, properties);
+            RGN::Modules::VirtualItems::Properties properties,
+            CancellationToken cancellationToken = CancellationToken()) {
+                AddToInventoryAsync(success, fail, RGNCore::GetUserId(), virtualItemId, quantity, properties, cancellationToken);
             };
 
         static void AddToInventoryAsync(
@@ -26,7 +27,8 @@ namespace RGN { namespace Modules { namespace Inventory {
             std::string userId,
             std::string virtualItemId,
             int32_t quantity,
-            RGN::Modules::VirtualItems::Properties properties) {
+            RGN::Modules::VirtualItems::Properties properties,
+            CancellationToken cancellationToken = CancellationToken()) {
                 RGN::Modules::Inventory::InventoryItemData inventoryItemData;
                 inventoryItemData.virtualItemId = virtualItemId;
                 inventoryItemData.appIds = { RGNCore::GetAppId() };
@@ -36,13 +38,15 @@ namespace RGN { namespace Modules { namespace Inventory {
                     success,
                     fail,
                     userId,
-                    inventoryItemData);
+                    inventoryItemData,
+                    cancellationToken);
             };
         static void AddToInventoryAsync(
             const function<void(RGN::Modules::Inventory::AddToInventoryResponseData result)>& success,
             const function<void(int httpCode, string error)>& fail,
             string userId,
-            RGN::Modules::Inventory::InventoryItemData inventoryData) {
+            RGN::Modules::Inventory::InventoryItemData inventoryData,
+            CancellationToken cancellationToken = CancellationToken()) {
                 RGN::Modules::Inventory::AddVirtualItemToUserInventoryRequestData requestData;
                 requestData.userId = userId;
                 requestData.virtualItemInventoryData = inventoryData;
@@ -51,22 +55,24 @@ namespace RGN { namespace Modules { namespace Inventory {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false, cancellationToken);
             };
         static void GetWithVirtualItemsDataForCurrentAppAsync(
             const std::function<void(std::vector<RGN::Modules::Inventory::InventoryItemData> result)>& success,
             const std::function<void(int httpCode, std::string error)>& fail,
-            std::string startAfter,
-            int32_t limit) {
-                GetWithVirtualItemsDataByAppIdsAsync(success, fail, {RGNCore::GetAppId()}, startAfter, limit);
+            int64_t startAfter,
+            int32_t limit,
+            CancellationToken cancellationToken = CancellationToken()) {
+                GetWithVirtualItemsDataByAppIdsAsync(success, fail, {RGNCore::GetAppId()}, startAfter, limit, cancellationToken);
             };
 
         static void GetWithVirtualItemsDataByAppIdsAsync(
             const std::function<void(std::vector<RGN::Modules::Inventory::InventoryItemData> result)>& success,
             const std::function<void(int httpCode, std::string error)>& fail,
             std::vector<string> appIds,
-            std::string startAfter,
-            int32_t limit) {
+            int64_t startAfter,
+            int32_t limit,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["appId"] = RGNCore::GetAppId();
                 bodyJson["startAfter"] = startAfter;
@@ -85,7 +91,7 @@ namespace RGN { namespace Modules { namespace Inventory {
                         success(response.items);
                     },
                 fail,
-                false);
+                false, cancellationToken);
             };
 
         static RGN::Modules::Inventory::InventoryItemData ParseInventoryItemData(string json) {

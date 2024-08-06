@@ -18,14 +18,22 @@ struct READYGAMESNETWORK_API FBP_AddToInventoryResponseData {
     FString id;
     UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Inventory")
     int32 quantity;
+    UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Inventory")
+    int64 createdAt;
+    UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Inventory")
+    int64 updatedAt;
 
 	static void ConvertToUnrealModel(const RGN::Modules::Inventory::AddToInventoryResponseData& source, FBP_AddToInventoryResponseData& target) {
         target.id = FString(UTF8_TO_TCHAR(source.id.c_str()));
         target.quantity = source.quantity;
+        target.createdAt = source.createdAt;
+        target.updatedAt = source.updatedAt;
 	}
 
 	static void ConvertToCoreModel(const FBP_AddToInventoryResponseData& source, RGN::Modules::Inventory::AddToInventoryResponseData& target) {
         target.id = string(TCHAR_TO_UTF8(*source.id));
         target.quantity = source.quantity;
+        target.createdAt = source.createdAt;
+        target.updatedAt = source.updatedAt;
 	}
 };

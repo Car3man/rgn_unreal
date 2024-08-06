@@ -29,6 +29,11 @@ struct READYGAMESNETWORK_API FBP_AchievementData : public FBP_BaseRequestData {
     UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Achievement")
     TArray<FString> appIds;
     /**
+     * List of tags to filter the achievements
+     */
+    UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Achievement")
+    TArray<FString> tags;
+    /**
      * Achievement request name. This value can be used to query or trigger achievements
      */
     UPROPERTY(BlueprintReadWrite, Category = "ReadyGamesNetwork | Achievement")
@@ -161,6 +166,11 @@ struct READYGAMESNETWORK_API FBP_AchievementData : public FBP_BaseRequestData {
             b_source_appIds_item = FString(UTF8_TO_TCHAR(source_appIds_item.c_str()));
             target.appIds.Add(b_source_appIds_item);
         }
+        for (const auto& source_tags_item : source.tags) {
+            FString b_source_tags_item;
+            b_source_tags_item = FString(UTF8_TO_TCHAR(source_tags_item.c_str()));
+            target.tags.Add(b_source_tags_item);
+        }
         target.requestName = FString(UTF8_TO_TCHAR(source.requestName.c_str()));
         target.name = FString(UTF8_TO_TCHAR(source.name.c_str()));
         target.description = FString(UTF8_TO_TCHAR(source.description.c_str()));
@@ -195,6 +205,11 @@ struct READYGAMESNETWORK_API FBP_AchievementData : public FBP_BaseRequestData {
             string cpp_source_appIds_item;
             cpp_source_appIds_item = string(TCHAR_TO_UTF8(*source_appIds_item));
             target.appIds.push_back(cpp_source_appIds_item);
+        }
+        for (const auto& source_tags_item : source.tags) {
+            string cpp_source_tags_item;
+            cpp_source_tags_item = string(TCHAR_TO_UTF8(*source_tags_item));
+            target.tags.push_back(cpp_source_tags_item);
         }
         target.requestName = string(TCHAR_TO_UTF8(*source.requestName));
         target.name = string(TCHAR_TO_UTF8(*source.name));

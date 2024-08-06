@@ -2,6 +2,8 @@
 // This file is generated: please don't modify. Go to Unity code generator if you need changes.
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "../../../../Utility/BP_CancellationToken.h"
+#include "../../../../../Utility/CancellationToken.h"
 #include "../../../../../Generated/RGN/Modules/GameProgress/GameProgressModule.h"
 #include "../../../../../Generated/RGN/Modules/Currency/Currency.h"
 #include "../Currency/BP_Currency.h"
@@ -41,17 +43,20 @@ UCLASS()
 class READYGAMESNETWORK_API UBP_GameProgressModule : public UBlueprintFunctionLibrary {
     GENERATED_BODY()
 public:
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress", meta=(AutoCreateRefTerm="cancellationToken"))
     static void OnGameCompleteAsync(
         FGameProgressModuleOnGameCompleteAsyncResponse onSuccess,
         FGameProgressModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const TArray<FBP_Currency>& reward) {
             vector<RGN::Modules::Currency::Currency> cpp_reward;
+            RGN::CancellationToken cpp_cancellationToken;
             for (const auto& reward_item : reward) {
                 RGN::Modules::Currency::Currency cpp_reward_item;
                 FBP_Currency::ConvertToCoreModel(reward_item, cpp_reward_item);
                 cpp_reward.push_back(cpp_reward_item);
             }
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::GameProgress::GameProgressModule::OnGameCompleteAsync(
                 [onSuccess](RGN::Modules::GameProgress::OnGameCompleteResult response) {
                     FBP_OnGameCompleteResult bpResponse;
@@ -61,12 +66,21 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_reward);
+                cpp_reward,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress")
+    /**
+     * Gets the current user level.
+     * @param cancellationToken - A token to cancel the operation.
+     * @return User level
+     */
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetGameProgressAsync(
         FGameProgressModuleGetGameProgressAsyncResponse onSuccess,
-        FGameProgressModuleFailResponse onFail) {
+        FGameProgressModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken) {
+            RGN::CancellationToken cpp_cancellationToken;
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::GameProgress::GameProgressModule::GetGameProgressAsync(
                 [onSuccess](RGN::Modules::GameProgress::GameProgress response) {
                     FBP_GameProgress bpResponse;
@@ -75,15 +89,19 @@ public:
                 },
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
-                });
+                },
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress", meta=(AutoCreateRefTerm="cancellationToken"))
     static void AddUserProgressAsync(
         FGameProgressModuleAddUserProgressAsyncResponse onSuccess,
         FGameProgressModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& userProgressJson) {
             string cpp_userProgressJson;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_userProgressJson = string(TCHAR_TO_UTF8(*userProgressJson));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::GameProgress::GameProgressModule::AddUserProgressAsync(
                 [onSuccess](string response) {
                     FString bpResponse;
@@ -93,22 +111,26 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_userProgressJson);
+                cpp_userProgressJson,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress", meta=(AutoCreateRefTerm="cancellationToken"))
     static void UpdateUserProgressAsync(
         FGameProgressModuleUpdateUserProgressAsyncResponse onSuccess,
         FGameProgressModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& userProgressJson,
         const TArray<FBP_Currency>& reward) {
             string cpp_userProgressJson;
             vector<RGN::Modules::Currency::Currency> cpp_reward;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_userProgressJson = string(TCHAR_TO_UTF8(*userProgressJson));
             for (const auto& reward_item : reward) {
                 RGN::Modules::Currency::Currency cpp_reward_item;
                 FBP_Currency::ConvertToCoreModel(reward_item, cpp_reward_item);
                 cpp_reward.push_back(cpp_reward_item);
             }
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::GameProgress::GameProgressModule::UpdateUserProgressAsync(
                 [onSuccess](string response) {
                     FString bpResponse;
@@ -119,12 +141,16 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_userProgressJson,
-                cpp_reward);
+                cpp_reward,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | GameProgress", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetUserProgressAsync(
         FGameProgressModuleGetUserProgressAsyncResponse onSuccess,
-        FGameProgressModuleFailResponse onFail) {
+        FGameProgressModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken) {
+            RGN::CancellationToken cpp_cancellationToken;
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::GameProgress::GameProgressModule::GetUserProgressAsync(
                 [onSuccess](string response) {
                     FString bpResponse;
@@ -133,6 +159,7 @@ public:
                 },
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
-                });
+                },
+                cpp_cancellationToken);
     }
 };

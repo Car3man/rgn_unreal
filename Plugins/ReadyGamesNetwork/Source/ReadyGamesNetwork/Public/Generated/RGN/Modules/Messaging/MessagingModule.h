@@ -3,6 +3,7 @@
 #include "../../../../json.hpp"
 #include "../../../../Core/RGNCore.h"
 #include "../../../../CustomImpl/RGN/Modules/Messaging/MessagingModule.h"
+#include "../../../../Utility/CancellationToken.h"
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -51,6 +52,7 @@ namespace RGN { namespace Modules { namespace Messaging {
          * in case the application is in background
          * @param text - Optional. If provided, the message will appear in system tray
          * in case the application is in background
+         * @param cancellationToken - A token to cancel the operation.
          */
         static void SendMessageByUserId(
             const function<void(void)>& success,
@@ -59,7 +61,8 @@ namespace RGN { namespace Modules { namespace Messaging {
             const string& userId,
             const string& payload,
             const string& title,
-            const string& text) {
+            const string& text,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::Messaging::MessagingModuleCustomImpl::SendMessageByUserId(
                     success,
                     fail,
@@ -67,7 +70,8 @@ namespace RGN { namespace Modules { namespace Messaging {
                     userId,
                     payload,
                     title,
-                    text);
+                    text,
+                    cancellationToken);
             };
     };
 }}}

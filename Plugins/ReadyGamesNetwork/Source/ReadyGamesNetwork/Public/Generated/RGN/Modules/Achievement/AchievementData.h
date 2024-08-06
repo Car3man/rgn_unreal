@@ -22,6 +22,10 @@ namespace RGN { namespace Modules { namespace Achievement {
          */
         vector<string> appIds;
         /**
+         * List of tags to filter the achievements
+         */
+        vector<string> tags;
+        /**
          * Achievement request name. This value can be used to query or trigger achievements
          */
         string requestName;
@@ -134,6 +138,7 @@ namespace RGN { namespace Modules { namespace Achievement {
             nlohmann_json_j["appPackageName"] = nlohmann_json_t.appPackageName;
             nlohmann_json_j["id"] = nlohmann_json_t.id;
             nlohmann_json_j["appIds"] = nlohmann_json_t.appIds;
+            nlohmann_json_j["tags"] = nlohmann_json_t.tags;
             nlohmann_json_j["requestName"] = nlohmann_json_t.requestName;
             nlohmann_json_j["name"] = nlohmann_json_t.name;
             nlohmann_json_j["description"] = nlohmann_json_t.description;
@@ -170,6 +175,12 @@ namespace RGN { namespace Modules { namespace Achievement {
                 auto json_appIds = nlohmann_json_j.at("appIds");
                 if (!json_appIds.is_null() && json_appIds.is_array()) {
                     json_appIds.get_to(nlohmann_json_t.appIds);
+                }
+            }
+            if (nlohmann_json_j.contains("tags")) {
+                auto json_tags = nlohmann_json_j.at("tags");
+                if (!json_tags.is_null() && json_tags.is_array()) {
+                    json_tags.get_to(nlohmann_json_t.tags);
                 }
             }
             if (nlohmann_json_j.contains("requestName")) {

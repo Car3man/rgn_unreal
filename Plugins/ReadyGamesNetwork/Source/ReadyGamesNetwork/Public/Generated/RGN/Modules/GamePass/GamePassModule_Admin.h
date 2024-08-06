@@ -2,6 +2,7 @@
 // This file is generated: please don't modify. Go to Unity code generator if you need changes.
 #include "../../../../json.hpp"
 #include "../../../../Core/RGNCore.h"
+#include "../../../../Utility/CancellationToken.h"
 #include "GamePassData.h"
 #include "GamePassUserData.h"
 #include "GetGamePassUserDataResponseData.h"
@@ -17,20 +18,23 @@ namespace RGN { namespace Modules { namespace GamePass {
         static void AddAsync(
             const function<void(const RGN::Modules::GamePass::GamePassData& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const RGN::Modules::GamePass::GamePassData& gamepassData) {
+            const RGN::Modules::GamePass::GamePassData& gamepassData,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 RGN::Modules::GamePass::GamePassData requestData;
                 RGNCore::CallAPI<RGN::Modules::GamePass::GamePassData, RGN::Modules::GamePass::GamePassData>(
                     "gamePass-add",
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteAsync(
             const function<void(const RGN::Modules::GamePass::GamePassData& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& id = "",
-            const string& requestName = "") {
+            const string& requestName = "",
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["id"] = id;
@@ -40,14 +44,16 @@ namespace RGN { namespace Modules { namespace GamePass {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddToUserAsync(
             const function<void(const RGN::Modules::GamePass::GamePassUserData& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& id = "",
             const string& requestName = "",
-            const string& userId = "") {
+            const string& userId = "",
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["id"] = id;
@@ -58,14 +64,16 @@ namespace RGN { namespace Modules { namespace GamePass {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteFromUserAsync(
             const function<void(const vector<RGN::Modules::GamePass::GamePassUserData>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& id = "",
             const string& requestName = "",
-            const string& userId = "") {
+            const string& userId = "",
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["id"] = id;
@@ -78,7 +86,8 @@ namespace RGN { namespace Modules { namespace GamePass {
                         success(result.gamePasses);
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
     };
 }}}

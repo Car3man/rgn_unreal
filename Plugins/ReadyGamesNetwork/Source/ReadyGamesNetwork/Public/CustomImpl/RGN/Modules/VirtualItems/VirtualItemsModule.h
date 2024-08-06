@@ -82,7 +82,7 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                             success(byteVector);
                         });
                     },
-                    fail, false
+                    fail, false, cancellationToken
                 );
             };
     };

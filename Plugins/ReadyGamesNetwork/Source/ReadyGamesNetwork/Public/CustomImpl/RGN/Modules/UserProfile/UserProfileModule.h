@@ -8,6 +8,7 @@
 #include "../../../../Generated/RGN/Modules/UserProfile/UserData.h"
 #include "../../../../Generated/RGN/Modules/UserProfile/UserProfilePicture.h"
 #include "../../../../Generated/RGN/Model/ImageSize.h"
+#include "../../../../Generated/RGN/Modules/UserProfile/UserCustomClaims.h"
 #include <string>
 
 namespace RGN { namespace Modules { namespace UserProfile {
@@ -15,7 +16,8 @@ namespace RGN { namespace Modules { namespace UserProfile {
 	public:
         static void GetProfileAsync(
             const function<void(RGN::Modules::UserProfile::UserData result)>& success,
-            const function<void(int httpCode, string error)>& fail) {
+            const function<void(int httpCode, string error)>& fail,
+            CancellationToken cancellationToken = CancellationToken()) {
                 RGN::Modules::UserProfile::GetUserProfileRequestData requestData;
                 requestData.userId = RGNCore::GetUserId();
                 RGNCore::CallAPI<RGN::Modules::UserProfile::GetUserProfileRequestData, RGN::Modules::UserProfile::UserData>(
@@ -23,18 +25,21 @@ namespace RGN { namespace Modules { namespace UserProfile {
                     requestData,
                     success,
                     fail,
-                    false
+                    false,
+                    cancellationToken
                 );
             };
         static void GetFullUserProfileAsync(
             const function<void(string result)>& success,
-            const function<void(int httpCode, string error)>& fail) {
-                GetFullUserProfileAsync(success, fail, RGNCore::GetUserId());
+            const function<void(int httpCode, string error)>& fail,
+            CancellationToken cancellationToken = CancellationToken()) {
+                GetFullUserProfileAsync(success, fail, RGNCore::GetUserId(), cancellationToken);
             };
         static void GetFullUserProfileAsync(
             const function<void(string result)>& success,
             const function<void(int httpCode, string error)>& fail,
-            string userId) {
+            string userId,
+            CancellationToken cancellationToken = CancellationToken()) {
                 RGN::Modules::UserProfile::GetUserProfileRequestData requestData;
                 requestData.userId = userId;
                 RGNCore::CallAPI<RGN::Modules::UserProfile::GetUserProfileRequestData, string>(
@@ -44,7 +49,7 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         success(result);
                     },
                     fail,
-                    false
+                    false, cancellationToken
                 );
             };
         static void UploadAvatarImageAsync(
@@ -62,7 +67,8 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         success(true);
                     },
                     fail,
-                    false
+                    false,
+                    cancellationToken
                 );
             };
         static void DownloadAvatarImageAsync(
@@ -108,14 +114,15 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         }
                         success(byteVector);
                     });
-                }, fail);
+                }, fail, cancellationToken);
             };
         static void ChangeAdminStatusByEmailAsync(
             const function<void(RGN::Modules::UserProfile::UserCustomClaims result)>& success,
             const function<void(int httpCode, string error)>& fail,
             string email,
             bool isAdmin,
-            int32_t accessLevel) {
+            int32_t accessLevel,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["email"] = email;
                 bodyJson["isAdmin"] = isAdmin;
@@ -127,7 +134,7 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         userCustomClaims.claims = response.template get<std::unordered_map<std::string, std::string>>();
                         success(userCustomClaims);
                     },
-                    fail, false
+                    fail, false, cancellationToken
                 );
             };
         static void ChangeAdminStatusByUserIdAsync(
@@ -135,7 +142,8 @@ namespace RGN { namespace Modules { namespace UserProfile {
             const function<void(int httpCode, string error)>& fail,
             string userId,
             bool isAdmin,
-            int32_t accessLevel) {
+            int32_t accessLevel,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["userId"] = userId;
                 bodyJson["isAdmin"] = isAdmin;
@@ -147,13 +155,14 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         userCustomClaims.claims = response.template get<std::unordered_map<std::string, std::string>>();
                         success(userCustomClaims);
                     },
-                    fail, false
+                    fail, false, cancellationToken
                 );
             };
         static void GetUserCustomClaimsByUserIdAsync(
             const function<void(RGN::Modules::UserProfile::UserCustomClaims result)>& success,
             const function<void(int httpCode, string error)>& fail,
-            string userId) {
+            string userId,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["userId"] = userId;
                 RGNCore::CallAPI<nlohmann::json, nlohmann::json>
@@ -163,13 +172,14 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         userCustomClaims.claims = response.template get<std::unordered_map<std::string, std::string>>();
                         success(userCustomClaims);
                     },
-                    fail, false
+                    fail, false, cancellationToken
                 );
             };
         static void GetUserCustomClaimsByEmailAsync(
             const function<void(RGN::Modules::UserProfile::UserCustomClaims result)>& success,
             const function<void(int httpCode, string error)>& fail,
-            string email) {
+            string email,
+            CancellationToken cancellationToken = CancellationToken()) {
                 nlohmann::json bodyJson;
                 bodyJson["email"] = email;
                 RGNCore::CallAPI<nlohmann::json, nlohmann::json>
@@ -179,7 +189,7 @@ namespace RGN { namespace Modules { namespace UserProfile {
                         userCustomClaims.claims = response.template get<std::unordered_map<std::string, std::string>>();
                         success(userCustomClaims);
                     },
-                    fail, false
+                    fail, false, cancellationToken
                 );
             };
         static void SuspendAsync(

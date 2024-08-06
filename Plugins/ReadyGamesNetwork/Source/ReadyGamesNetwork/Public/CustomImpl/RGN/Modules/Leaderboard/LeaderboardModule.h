@@ -13,8 +13,9 @@ namespace RGN { namespace Modules { namespace Leaderboard {
             const function<void(const vector<RGN::Modules::Leaderboard::LeaderboardData>& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const int32_t limit,
-            const string& startAfter = "",
-            const bool ignoreTimestamp = false) {
+            const int64_t startAfter = 0,
+            const bool ignoreTimestamp = false,
+            CancellationToken cancellationToken = CancellationToken()) {
             nlohmann::json requestData;
             requestData["appId"] = RGNCore::GetAppId();
             requestData["appIds"] = {RGNCore::GetAppId()};
@@ -28,7 +29,7 @@ namespace RGN { namespace Modules { namespace Leaderboard {
                     success(result.leaderboards);
                 },
                 fail,
-                false);
+                false, cancellationToken);
             }
 	};
 }}}

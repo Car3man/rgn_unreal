@@ -2,6 +2,7 @@
 // This file is generated: please don't modify. Go to Unity code generator if you need changes.
 #include "../../../../json.hpp"
 #include "../../../../Core/RGNCore.h"
+#include "../../../../Utility/CancellationToken.h"
 #include "AchievementData.h"
 #include <vector>
 #include <unordered_map>
@@ -15,7 +16,8 @@ namespace RGN { namespace Modules { namespace Achievement {
         static void AddAchievementAsync(
             const function<void(const string& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const RGN::Modules::Achievement::AchievementData& achievementData) {
+            const RGN::Modules::Achievement::AchievementData& achievementData,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["data"] = achievementData;
@@ -26,12 +28,14 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(result["result"]["id"].template get<string>());
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void UpdateAchievementAsync(
             const function<void(const string& result)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const RGN::Modules::Achievement::AchievementData& achievementData) {
+            const RGN::Modules::Achievement::AchievementData& achievementData,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["data"] = achievementData;
@@ -42,12 +46,14 @@ namespace RGN { namespace Modules { namespace Achievement {
                         success(result["result"]["id"].template get<string>());
                     },
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& achievementId) {
+            const string& achievementId,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["id"] = achievementId;
@@ -56,13 +62,15 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddLoginDaysInRowAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& achievementId,
-            const int32_t daysInRow) {
+            const int32_t daysInRow,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementId"] = achievementId;
@@ -71,13 +79,15 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddLoginDaysInRowAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const RGN::Modules::Achievement::AchievementData& achievementData,
-            const int32_t daysInRow) {
+            const int32_t daysInRow,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementData"] = achievementData;
@@ -86,13 +96,15 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteLoginDaysInRowGameConstRecordAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& achievementId,
-            const int32_t daysInRow) {
+            const int32_t daysInRow,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementId"] = achievementId;
@@ -101,14 +113,16 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddPlayerProgressAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& achievementId,
             const string& playerProgressFieldName,
-            const int64_t playerProgressFieldValueToReach) {
+            const int64_t playerProgressFieldValueToReach,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementId"] = achievementId;
@@ -119,14 +133,16 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddPlayerProgressAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const RGN::Modules::Achievement::AchievementData& achievementData,
             const string& playerProgressFieldName,
-            const int64_t playerProgressFieldValueToReach) {
+            const int64_t playerProgressFieldValueToReach,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementData"] = achievementData;
@@ -137,14 +153,16 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeletePlayerProgressAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& achievementId,
             const string& playerProgressFieldName,
-            const int64_t playerProgressFieldValueToReach) {
+            const int64_t playerProgressFieldValueToReach,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementId"] = achievementId;
@@ -155,13 +173,15 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddPurchaseAchievementAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const RGN::Modules::Achievement::AchievementData& achievementData,
-            const string& virtualItemTag) {
+            const string& virtualItemTag,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementData"] = achievementData;
@@ -171,13 +191,15 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeletePurchaseGameConstRecordAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
             const string& achievementId,
-            const string& virtualItemTag) {
+            const string& virtualItemTag,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["achievementId"] = achievementId;
@@ -187,7 +209,8 @@ namespace RGN { namespace Modules { namespace Achievement {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
     };
 }}}

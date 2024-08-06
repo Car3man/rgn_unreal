@@ -15,7 +15,8 @@ namespace RGN { namespace Modules { namespace VirtualItems {
         static void DeleteVirtualItemsByIdsAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const vector<string>& virtualItemIds) {
+            const vector<string>& virtualItemIds,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["virtualItemIds"] = virtualItemIds;
@@ -24,12 +25,14 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteVirtualItemsByNameAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& itemName) {
+            const string& itemName,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["itemName"] = itemName;
@@ -38,12 +41,14 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void DeleteVirtualItemByAppIdAsync(
             const function<void(void)>& success,
             const function<void(const int httpCode, const string& error)>& fail,
-            const string& appId) {
+            const string& appId,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = RGNCore::GetAppId();
                 requestData["requestedAppId"] = appId;
@@ -52,7 +57,8 @@ namespace RGN { namespace Modules { namespace VirtualItems {
                     requestData,
                     success,
                     fail,
-                    false);
+                    false,
+                    cancellationToken);
             };
         static void AddFromCSVWithBlockchainStubAsync(
             const function<void(const vector<string>& result)>& success,

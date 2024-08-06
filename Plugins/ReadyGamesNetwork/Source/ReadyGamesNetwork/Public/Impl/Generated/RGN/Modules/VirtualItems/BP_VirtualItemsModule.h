@@ -57,14 +57,18 @@ class READYGAMESNETWORK_API UBP_VirtualItemsModule : public UBlueprintFunctionLi
 public:
     /**
      * Add a virtual item
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void AddVirtualItemAsync(
         FVirtualItemsModuleAddVirtualItemAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FBP_VirtualItem& virtualItem) {
             RGN::Modules::VirtualItems::VirtualItem cpp_virtualItem;
+            RGN::CancellationToken cpp_cancellationToken;
             FBP_VirtualItem::ConvertToCoreModel(virtualItem, cpp_virtualItem);
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::AddVirtualItemAsync(
                 [onSuccess](RGN::Modules::VirtualItems::VirtualItem response) {
                     FBP_VirtualItem bpResponse;
@@ -74,7 +78,8 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_virtualItem);
+                cpp_virtualItem,
+                cpp_cancellationToken);
     }
     /**
      * Asynchronously adds a list of virtual items from a CSV content string to the Ready Games Network.
@@ -123,18 +128,22 @@ public:
      * Asynchronously updates a specific virtual item in the Ready Games Network.
      * @param itemId - The ID of the virtual item to be updated.
      * @param virtualItem - A VirtualItem object containing the new data for the virtual item.
+     * @param cancellationToken - A token to cancel the operation.
      * @return A Task representing the asynchronous operation. The result of the Task is the updated VirtualItem.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void UpdateVirtualItemAsync(
         FVirtualItemsModuleUpdateVirtualItemAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& itemId,
         const FBP_VirtualItem& virtualItem) {
             string cpp_itemId;
             RGN::Modules::VirtualItems::VirtualItem cpp_virtualItem;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_itemId = string(TCHAR_TO_UTF8(*itemId));
             FBP_VirtualItem::ConvertToCoreModel(virtualItem, cpp_virtualItem);
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::UpdateVirtualItemAsync(
                 [onSuccess](RGN::Modules::VirtualItems::VirtualItem response) {
                     FBP_VirtualItem bpResponse;
@@ -145,21 +154,26 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_itemId,
-                cpp_virtualItem);
+                cpp_virtualItem,
+                cpp_cancellationToken);
     }
     /**
      * Asynchronously deletes a specific virtual item from the Ready Games Network.
      * @param itemId - The ID of the virtual item to be deleted.
+     * @param cancellationToken - A token to cancel the operation.
      * @return A Task representing the asynchronous operation.
      * @throw: Thrown when 'itemId' is null or empty.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void DeleteVirtualItemAsync(
         FVirtualItemsModuleDeleteVirtualItemAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& itemId) {
             string cpp_itemId;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_itemId = string(TCHAR_TO_UTF8(*itemId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::DeleteVirtualItemAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -167,12 +181,20 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_itemId);
+                cpp_itemId,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
-    static void GetVirtualItemsAsync(
+    /**
+     * Getting all virtual items releated to your game
+     * @param cancellationToken - A token to cancel the operation.
+     */
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
+    static void GetVirtualItemsAsync_CancellationToken(
         FVirtualItemsModuleGetVirtualItemsAsyncResponse onSuccess,
-        FVirtualItemsModuleFailResponse onFail) {
+        FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken) {
+            RGN::CancellationToken cpp_cancellationToken;
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetVirtualItemsAsync(
                 [onSuccess](vector<RGN::Modules::VirtualItems::VirtualItem> response) {
                     TArray<FBP_VirtualItem> bpResponse;
@@ -185,23 +207,28 @@ public:
                 },
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
-                });
+                },
+                cpp_cancellationToken);
     }
     /**
      * Returns a limited list of virtual items for your game.
      * @param limit - Maximal count of items to return
      * @param startAfter - The item id to start after
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="startAfter"))
-    static void GetVirtualItemsAsync_Limit_StartAfter(
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="startAfter, cancellationToken"))
+    static void GetVirtualItemsAsync_Limit_StartAfter_CancellationToken(
         FVirtualItemsModuleGetVirtualItemsAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         int32 limit,
         const FString& startAfter = "") {
             int32_t cpp_limit;
             string cpp_startAfter;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_limit = limit;
             cpp_startAfter = string(TCHAR_TO_UTF8(*startAfter));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetVirtualItemsAsync(
                 [onSuccess](vector<RGN::Modules::VirtualItems::VirtualItem> response) {
                     TArray<FBP_VirtualItem> bpResponse;
@@ -216,19 +243,23 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_limit,
-                cpp_startAfter);
+                cpp_startAfter,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetVirtualItemsByIdsAsync(
         FVirtualItemsModuleGetVirtualItemsByIdsAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const TArray<FString>& virtualItemsIds) {
             vector<string> cpp_virtualItemsIds;
+            RGN::CancellationToken cpp_cancellationToken;
             for (const auto& virtualItemsIds_item : virtualItemsIds) {
                 string cpp_virtualItemsIds_item;
                 cpp_virtualItemsIds_item = string(TCHAR_TO_UTF8(*virtualItemsIds_item));
                 cpp_virtualItemsIds.push_back(cpp_virtualItemsIds_item);
             }
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetVirtualItemsByIdsAsync(
                 [onSuccess](vector<RGN::Modules::VirtualItems::VirtualItem> response) {
                     TArray<FBP_VirtualItem> bpResponse;
@@ -242,22 +273,23 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_virtualItemsIds);
+                cpp_virtualItemsIds,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="appId"))
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetByTagsAsync(
         FVirtualItemsModuleGetByTagsAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
-        const TArray<FString>& tags,
-        const FString& appId = "") {
+        const FBP_CancellationToken& cancellationToken,
+        const TArray<FString>& tags) {
             vector<string> cpp_tags;
-            string cpp_appId;
+            RGN::CancellationToken cpp_cancellationToken;
             for (const auto& tags_item : tags) {
                 string cpp_tags_item;
                 cpp_tags_item = string(TCHAR_TO_UTF8(*tags_item));
                 cpp_tags.push_back(cpp_tags_item);
             }
-            cpp_appId = string(TCHAR_TO_UTF8(*appId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetByTagsAsync(
                 [onSuccess](vector<RGN::Modules::VirtualItems::VirtualItem> response) {
                     TArray<FBP_VirtualItem> bpResponse;
@@ -272,18 +304,22 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_tags,
-                cpp_appId);
+                cpp_cancellationToken);
     }
     /**
      * Returns all tags for specific virtual item
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetTagsAsync(
         FVirtualItemsModuleGetTagsAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId) {
             string cpp_virtualItemId;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetTagsAsync(
                 [onSuccess](vector<string> response) {
                     TArray<FString> bpResponse;
@@ -297,25 +333,26 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_virtualItemId);
+                cpp_virtualItemId,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="appId"))
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void SetTagsAsync(
         FVirtualItemsModuleSetTagsAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId,
-        const TArray<FString>& tags,
-        const FString& appId = "") {
+        const TArray<FString>& tags) {
             string cpp_virtualItemId;
             vector<string> cpp_tags;
-            string cpp_appId;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
             for (const auto& tags_item : tags) {
                 string cpp_tags_item;
                 cpp_tags_item = string(TCHAR_TO_UTF8(*tags_item));
                 cpp_tags.push_back(cpp_tags_item);
             }
-            cpp_appId = string(TCHAR_TO_UTF8(*appId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::SetTagsAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -325,21 +362,25 @@ public:
                 },
                 cpp_virtualItemId,
                 cpp_tags,
-                cpp_appId);
+                cpp_cancellationToken);
     }
     /**
      * Sets the name for a specific virtual item
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void SetNameAsync(
         FVirtualItemsModuleSetNameAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId,
         const FString& name) {
             string cpp_virtualItemId;
             string cpp_name;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
             cpp_name = string(TCHAR_TO_UTF8(*name));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::SetNameAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -348,21 +389,26 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_virtualItemId,
-                cpp_name);
+                cpp_name,
+                cpp_cancellationToken);
     }
     /**
      * Sets the description for a specific virtual item
+     * @param cancellationToken - A token to cancel the operation.
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void SetDescriptionAsync(
         FVirtualItemsModuleSetDescriptionAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId,
         const FString& description) {
             string cpp_virtualItemId;
             string cpp_description;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
             cpp_description = string(TCHAR_TO_UTF8(*description));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::SetDescriptionAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -371,19 +417,24 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_virtualItemId,
-                cpp_description);
+                cpp_description,
+                cpp_cancellationToken);
     }
     /**
      * Returns json string or throws an exception if there are no json for virtual item
+     * @param cancellationToken - A token to cancel the operation.
      * @return Returns json as string
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void GetPropertiesAsync(
         FVirtualItemsModuleGetPropertiesAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId) {
             string cpp_virtualItemId;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::GetPropertiesAsync(
                 [onSuccess](string response) {
                     FString bpResponse;
@@ -393,22 +444,27 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_virtualItemId);
+                cpp_virtualItemId,
+                cpp_cancellationToken);
     }
     /**
      * Set json on a given virtualItemId.
+     * @param cancellationToken - A token to cancel the operation.
      * @return Returns json as string
      */
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void SetPropertiesAsync(
         FVirtualItemsModuleSetPropertiesAsyncResponse onSuccess,
         FVirtualItemsModuleFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& virtualItemId,
         const FString& json) {
             string cpp_virtualItemId;
             string cpp_json;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_virtualItemId = string(TCHAR_TO_UTF8(*virtualItemId));
             cpp_json = string(TCHAR_TO_UTF8(*json));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule::SetPropertiesAsync(
                 [onSuccess](string response) {
                     FString bpResponse;
@@ -419,13 +475,14 @@ public:
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
                 cpp_virtualItemId,
-                cpp_json);
+                cpp_json,
+                cpp_cancellationToken);
     }
     /**
      * Uploads an image thumbnail for a virtual item to the RGNCore backend.
      * @param virtualItemId - The ID of the virtual item to upload the thumbnail for.
      * @param thumbnailTextureBytes - The byte array of the thumbnail texture image to upload.
-     * @param cancellationToken - The cancellation token.
+     * @param cancellationToken - A token to cancel the operation.
      * @return A boolean indicating whether the upload was successful.
      */
     UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))

@@ -25,14 +25,15 @@ namespace RGN { namespace Modules { namespace Messaging {
             std::string userId,
             std::string payload,
             std::string title,
-            std::string text) {
+            std::string text,
+            const CancellationToken& cancellationToken = CancellationToken()) {
                 nlohmann::json requestData;
                 requestData["appId"] = appId;
                 requestData["userId"] = userId;
                 requestData["payload"] = payload;
                 requestData["title"] = title;
                 requestData["text"] = text;
-                RGNCore::CallAPI<nlohmann::json>("messaging-sendMessageByUserId", requestData, success, fail, false);
+                RGNCore::CallAPI<nlohmann::json>("messaging-sendMessageByUserId", requestData, success, fail, false, cancellationToken);
             };
 	};
 }}}

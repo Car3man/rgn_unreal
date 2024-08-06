@@ -22,7 +22,7 @@ namespace RGN { namespace Modules { namespace Analytics {
                 bodyJson["userPseudoId"] = RGN::Analytics::GetAnalyticsId();
                 bodyJson["sessionId"] = RGN::Analytics::GetSessionId();
                 bodyJson["eventParameters"] = eventParameters;
-                RGNCore::CallAPI<nlohmann::json>("analytics-logEvent", bodyJson, success, fail, false);
+                RGNCore::CallAPI<nlohmann::json>("analytics-logEvent", bodyJson, success, fail, false, cancellationToken);
             };
 	};
 }}}

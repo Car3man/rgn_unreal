@@ -24,17 +24,20 @@ UCLASS()
 class READYGAMESNETWORK_API UBP_VirtualItemsModule_Admin : public UBlueprintFunctionLibrary {
     GENERATED_BODY()
 public:
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void DeleteVirtualItemsByIdsAsync(
         FVirtualItemsModuleAdminDeleteVirtualItemsByIdsAsyncResponse onSuccess,
         FVirtualItemsModule_AdminFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const TArray<FString>& virtualItemIds) {
             vector<string> cpp_virtualItemIds;
+            RGN::CancellationToken cpp_cancellationToken;
             for (const auto& virtualItemIds_item : virtualItemIds) {
                 string cpp_virtualItemIds_item;
                 cpp_virtualItemIds_item = string(TCHAR_TO_UTF8(*virtualItemIds_item));
                 cpp_virtualItemIds.push_back(cpp_virtualItemIds_item);
             }
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule_Admin::DeleteVirtualItemsByIdsAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -42,15 +45,19 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_virtualItemIds);
+                cpp_virtualItemIds,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void DeleteVirtualItemsByNameAsync(
         FVirtualItemsModuleAdminDeleteVirtualItemsByNameAsyncResponse onSuccess,
         FVirtualItemsModule_AdminFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& itemName) {
             string cpp_itemName;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_itemName = string(TCHAR_TO_UTF8(*itemName));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule_Admin::DeleteVirtualItemsByNameAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -58,15 +65,19 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_itemName);
+                cpp_itemName,
+                cpp_cancellationToken);
     }
-    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems")
+    UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="cancellationToken"))
     static void DeleteVirtualItemByAppIdAsync(
         FVirtualItemsModuleAdminDeleteVirtualItemByAppIdAsyncResponse onSuccess,
         FVirtualItemsModule_AdminFailResponse onFail,
+        const FBP_CancellationToken& cancellationToken,
         const FString& appId) {
             string cpp_appId;
+            RGN::CancellationToken cpp_cancellationToken;
             cpp_appId = string(TCHAR_TO_UTF8(*appId));
+            FBP_CancellationToken::ConvertToCoreModel(cancellationToken, cpp_cancellationToken);
             RGN::Modules::VirtualItems::VirtualItemsModule_Admin::DeleteVirtualItemByAppIdAsync(
                 [onSuccess]() {
                     onSuccess.ExecuteIfBound();
@@ -74,7 +85,8 @@ public:
                 [onFail](int code, std::string message) {
                      onFail.ExecuteIfBound(static_cast<int32>(code), FString(message.c_str()));
                 },
-                cpp_appId);
+                cpp_appId,
+                cpp_cancellationToken);
     }
     UFUNCTION(BlueprintCallable, Category = "ReadyGamesNetwork | VirtualItems", meta=(AutoCreateRefTerm="csvDelimiter, cancellationToken"))
     static void AddFromCSVWithBlockchainStubAsync(
